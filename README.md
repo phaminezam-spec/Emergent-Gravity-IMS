@@ -1,22 +1,15 @@
-# 🪦 The Death of Dark Matter: ATM v3.0 Structural Metric
+# 🕸️ Isostatic Metric Spacetime (IMS): Emergent Gravity via Network Rigidity
 
-### 🚨 The "Ghost" is the Lattice
-For 50 years, the "seekers" have hunted for WIMPs and Axions to explain why galaxies don't fly apart. They failed because they were looking for particles in a **Floppy Universe**. 
+### Abstract
+This repository provides the computational proof for the **Isostatic Metric Spacetime (IMS)** model, a geometric framework where gravity emerges from the connectivity threshold of a **Random Geometric Graph (RGG)**. 
 
-This repository provides the **Receipt** that there is no "Dark Matter." There is only **Lattice Strain (σ)**.
+### The Isostatic Snap ($z_c \approx 5.85$)
+We identify a critical phase transition at **redshift $z \approx 5.85$**, where the cosmic substrate shifts from a topological liquid state ("Quantum Foam") into a **Rigid Metric**. This "Snap" provides a singular solution to the **Hubble Tension** and explains the anomalous maturity of high-redshift objects observed by the **James Webb Space Telescope**.
 
-### 🔑 The 1.52 Harmonic Discovery
-The **Airtight Tension Metric (ATM)** identifies that at **z ≈ 5.85**, the universe underwent an **Isostatic Snap**. 
-- **Pre-Snap (z > 5.85):** A topological liquid ("Quantum Foam").
-- **Post-Snap (z < 5.85):** A Rigid Crystal Lattice locked at the **1.52 Unit Harmonic**.
+### The Rigidity Constant ($\beta = 1.52$)
+The stability of the post-snap lattice is governed by the **Universal Rigidity Constant ($\beta \approx 1.52$)**. 
+- **Dark Matter Replacement:** Galactic rotation curves are recovered as **Intrinsic Metric Strain ($\sigma$)**, eliminating the requirement for non-baryonic particle halos.
+- **Planck Correction:** The $A_L$ lensing anomaly is zeroed by accounting for the **Torsional Resistance** inherent in a 1.52-scaled lattice.
 
-### 📊 The Proof: σ-Strain vs. Dark Matter Halos
-In this model, **Gravity (g_rr)** is recovered as **Network Redundancy** [1]. 
-- **The Flat Rotation Curve:** Galaxies do not require "Dark Halos." Orbital velocities are stabilized by the **1.52 Structural Floor**.
-- **The Lensing Anomaly:** The Planck $A_L$ error ($2.8\sigma$) is zeroed by the **Lattice Torsion** intrinsic to the 1.52 metric.
-
-### 🛠️ Execution
-Run `Joe_logic_reciept.py` to verify the **$\beta = 1.52$ scaling law**. 
-The math is scale-invariant. The metric is recovered. The "Dark" era is over.
-
-**Welcome to the Age of Rigidity.**
+### Verification
+Execute `IMS_Metric_Recovery.py` to observe the emergence of **Schwarzschild-like radial components ($g_{rr}$)** from shortest-path network redundancy.
