@@ -1,0 +1,61 @@
+""" IMS ISOSTATIC TUNNELING — COHESION PATCH
+
+Function: Simulates non-local connectivity within the system manifold. Logic:
+
+Cohesion Probability: Probabilistic links that extend beyond standard proximity constraints.
+
+Substrate Depth: Defines the decay constant governing manifold connectivity persistence.
+
+Result: Introduces effective shortcuts in the lattice to maintain the 1.52 scaling harmonic during expansion. ===================================================== """ import numpy as np
+
+
+def apply_isostatic_cohesion(G, pos, cohesion_prob=0.01, substrate_depth=0.05): """ Simulates isostatic cohesion by adding probabilistic edges that preserve manifold connectivity across the system. """ nodes = list(G.nodes()) cohesion_links = 0
+
+for i in range(len(nodes)):
+    for j in range(i + 1, len(nodes)):
+        # Calculate geometric distance within the manifold
+        dist = np.linalg.norm(pos[i] - pos[j])
+        
+        # Connectivity Logic:
+        # Probability of link formation decreases with distance.
+        cohesion_chance = cohesion_prob * np.exp(-dist / substrate_depth)
+        
+        if np.random.rand() < cohesion_chance:
+            if not G.has_edge(i, j):
+                # Add cohesion link to the lattice structure
+                G.add_edge(i, j, weight='cohesion_link')
+                cohesion_links += 1
+                
+print(f"Connectivity Events: {cohesion_links} cohesion links established.")
+return G
+
+""" IMS SUBSTRATE REMNANT — PHASE REFERENCE RECORD
+
+Function: Retains a structural reference of the previous 1.52 harmonic state. Logic:
+
+Phase References: Persistent markers of prior lattice equilibrium states.
+
+Isostatic Baseline: Nodes with freq=0.0 (static reference).
+
+Result: Intensity field providing a baseline for the z ≈ 5.85 structural phase transition. ===================================================== """
+
+
+def apply_isostatic_remnant(G, seed_pos, intensity=0.5): """ Leaves behind a phase reference of the previous isostatic state. Remnant nodes act as persistent markers of manifold history. """ # 1. Create a phase reference cluster near prior transition region for i in range(12): fossil_id = f"Ref_{np.random.randint(0, 1e6)}" # Offset within substrate depth scale offset = np.random.normal(0, 0.05, 3)
+
+G.add_node(
+        fossil_id,
+        pos=seed_pos + offset,
+        lattice_phase='remnant',
+        isostatic_freq=0.0,     # baseline frequency reference
+        isostatic_energy=0.0,   # passive informational node
+        alpha=intensity         # transparency weighting
+    )
+               
+    # 2. Nodes remain informational (no active edges)
+return 12
+
+Integration into primary lattice:
+
+G_updated = apply_isostatic_cohesion(G_lattice, node_positions)
+
+print("Substrate remnant logic active. Phase references initialized.")
