@@ -1,115 +1,85 @@
-It looks like you’re implementing a numerical experiment to recover an effective radial metric component  from your ATM isostatic lattice. Essentially, you’re comparing topological (graph) distances to Euclidean distances to see if the lattice reproduces a Schwarzschild-like  behavior.
-
-Here’s a concise breakdown of what your code does and a few observations:
-
-
----
-
-Workflow
-
-1. Setup
-
-isostatic_core represents the “mass-energy” hub of the lattice.
-
-radii defines discrete shells around the core.
-
-metric_data stores pairs of (1/r, g_rr) for analysis.
-
-
-
-2. Shell Sampling
-
-For each radius, you find nodes close to r and r + dr_step.
-
-You compute:
-
-dl: graph geodesic along the lattice (topological shortest path).
-
-dr: Euclidean distance in continuous space.
-
-
-Compute the effective radial metric:
-
-
-
-
-g_{rr} \approx \left(\frac{dl}{dr}\right)^2
-
-3. Regression Analysis
-
-Plots g_rr vs. 1/r.
-
-Performs a linear regression to test the inverse-radius scaling.
-
-Prints the effective curvature constant (slope).
-
-
-
-4. Visualization
-
-Scatter of lattice geodesics vs. inverse radius.
-
-Dashed line fit shows how well the lattice approximates  curvature.
-
-
-
-
-
----
-
-Observations / Suggestions
-
-1. Node and Graph Initialization
-
-Your snippet references nodes_pos and G_lattice but doesn’t show their creation. Make sure these are initialized before the loop:
-
-nodes_pos = np.random.rand(1000, 3)  # Example lattice positions
-G_lattice = nx.random_geometric_graph(1000, 0.1, pos={i: nodes_pos[i] for i in range(1000)})
-
-
-
-2. Path Existence
-
-nx.shortest_path_length can fail if u_idx[0] and v_idx[0] are in disconnected components.
-
-You could catch the exception and skip, which you already do, or use nx.has_path() to check first.
-
-
-
-3. Inverse-radius Regression
-
-Plotting g_rr against 1/r is smart—it directly tests whether your lattice tension produces a Schwarzschild-like radial scaling.
-
-Slope ≈ the effective curvature constant, which is physically analogous to your  unit curvature from earlier.
-
-
-
-4. Metric Interpretation
-
-Values significantly deviating from the regression line may indicate:
-
-Sparse connectivity at larger radii.
-
-Lattice irregularities or anisotropies.
-
-
-You could increase node density or connectivity to smooth g_rr.
-
-
-
-
-
----
-
-If you want, I can rewrite your snippet into a fully self-contained script that:
-
-Generates a lattice graph.
-
-Computes g_rr at multiple shells.
-
-Plots the regression automatically.
-
-
-This would let you see the Schwarzschild-like radial scaling emerge directly from the ATM lattice.
-
-Do you want me to do that?
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+
+# -----------------------------
+# Parameters
+# -----------------------------
+N_NODES = 1000           # Number of lattice nodes
+R_CONNECT = 0.1          # Connection radius for geometric graph
+CORE_POS = np.array([0.5, 0.5, 0.5])  # Isostatic "mass-energy" hub
+DR_STEP = 0.05           # Radial shell thickness
+MAX_RADIUS = 0.5         # Maximum shell radius to analyze
+
+# -----------------------------
+# Generate lattice graph
+# -----------------------------
+nodes_pos = np.random.rand(N_NODES, 3)
+pos_dict = {i: nodes_pos[i] for i in range(N_NODES)}
+G_lattice = nx.random_geometric_graph(N_NODES, R_CONNECT, pos=pos_dict)
+
+# Precompute Euclidean distances to core
+dist_to_core = np.linalg.norm(nodes_pos - CORE_POS, axis=1)
+
+# -----------------------------
+# Compute effective g_rr per shell
+# -----------------------------
+shell_centers = np.arange(DR_STEP, MAX_RADIUS, DR_STEP)
+g_rr_list = []
+inv_r_list = []
+
+for r in shell_centers:
+    # Nodes within current shell
+    shell_nodes = np.where((dist_to_core >= r) & (dist_to_core < r + DR_STEP))[0]
+    if len(shell_nodes) == 0:
+        continue
+
+    dl_shell = []
+    dr_shell = []
+
+    for node_idx in shell_nodes:
+        try:
+            # Shortest path length to core (topological)
+            dl = nx.shortest_path_length(G_lattice, source=0, target=node_idx, weight=None)
+            dl_shell.append(dl)
+
+            # Euclidean distance
+            dr_shell.append(dist_to_core[node_idx])
+        except nx.NetworkXNoPath:
+            continue
+
+    if len(dl_shell) == 0:
+        continue
+
+    # Effective radial metric g_rr = (dl/dr)^2
+    dl_shell = np.array(dl_shell)
+    dr_shell = np.array(dr_shell)
+    g_rr_shell = np.mean((dl_shell / dr_shell) ** 2)
+
+    g_rr_list.append(g_rr_shell)
+    inv_r_list.append(1.0 / r)
+
+g_rr_list = np.array(g_rr_list)
+inv_r_list = np.array(inv_r_list)
+
+# -----------------------------
+# Linear regression
+# -----------------------------
+slope, intercept, r_value, p_value, std_err = linregress(inv_r_list, g_rr_list)
+
+print(f"Effective curvature constant (slope): {slope:.4f}")
+print(f"Regression R^2: {r_value**2:.4f}")
+
+# -----------------------------
+# Visualization
+# -----------------------------
+plt.figure(figsize=(8, 6))
+plt.scatter(inv_r_list, g_rr_list, color='blue', label='Shell g_rr')
+plt.plot(inv_r_list, slope*inv_r_list + intercept, 'r--', label=f'Linear fit (slope={slope:.2f})')
+plt.xlabel("1 / r")
+plt.ylabel("g_rr (Effective Radial Metric)")
+plt.title("Schwarzschild-like Radial Metric from ATM Lattice")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
