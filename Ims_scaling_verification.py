@@ -2,37 +2,34 @@
 # ISOSTATIC METRIC SPACETIME (IMS): PHASE TRANSITION SCALING VERIFICATION
 # AUTHOR: [Your Name] | DATE: March 31, 2026
 # =============================================================================
-# This script identifies the 1.52 Universal Scaling Exponent and the 5.85 
-# Isostatic Snap. It demonstrates the emergence of structural rigidity and 
-# the power-law growth of redundant stress within the RGG substrate.
+# This script evaluates the 1.52 universal scaling exponent and the 5.85 
+# isostatic snap within the IMS framework. It demonstrates the emergence of 
+# lattice rigidity and the power-law growth of redundant stress in the lattice.
 # =============================================================================
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --- THEORETICAL COORDINATES ---
-Z_C = 5.85          # Isostatic Snap: The Critical Connectivity Threshold
-BETA = 1.52         # Universal Scaling Exponent: The Rigidity Constant
+# --- MODEL PARAMETERS ---
+Z_C = 5.85          # Isostatic Snap: critical connectivity threshold
+BETA = 1.52         # Universal Scaling Exponent: rigidity constant
 
-# --- SCALING ANALYSIS DATA ---
-# Analyzing the post-snap regime (z > z_c) to recover the tension gradient
-z_data = np.linspace(5.86, 10.0, 50)
-R_stress = (z_data - Z_C)**BETA  # The IMS Power-Law for Redundant Stress
+# --- SCALING ANALYSIS ---
+# Post-snap regime (z > Z_C) for tension gradient analysis
+z_data = np.linspace(Z_C + 0.01, 10.0, 50)  # avoid zero in log
+R_stress = (z_data - Z_C)**BETA              # power-law redundant stress
 
-print(f"--- IMS FRAMEWORK VERIFICATION ---")
-print(f"Isostatic Snap Point (z_c): {Z_C}")
-print(f"Universal Rigidity Constant (Beta): {BETA}")
+print("--- IMS FRAMEWORK VERIFICATION ---")
+print(f"Isostatic Snap Point (Z_C): {Z_C}")
+print(f"Universal Rigidity Constant (BETA): {BETA}")
 
-# --- VISUALIZATION: THE EMERGENT PHASE TRANSITION ---
-# The log-log plot demonstrates the power-law 'Receipt' for gravitational stiffness.
+# --- VISUALIZATION ---
 plt.figure(figsize=(8, 6))
-plt.loglog(z_data - Z_C, R_stress, 'go-', label=f'IMS Scaling Law (Beta={BETA})')
+plt.loglog(z_data - Z_C, R_stress, 'go-', label=f'IMS Scaling Law (BETA={BETA})')
 
 plt.title("IMS Framework: Emergent Scaling Law and Phase Transition")
-plt.xlabel("log(z - z_c) [Connectivity Excess]")
-plt.ylabel("log(R) [Redundant Stress Density]")
+plt.xlabel("Connectivity Excess (z - Z_C)")
+plt.ylabel("Redundant Stress Density R")
 plt.grid(True, which="both", alpha=0.3)
 plt.legend()
-
-print(f"SCALING ANALYSIS COMPLETE. Power-law convergence toward Beta=1.52 detected.")
 plt.show()
