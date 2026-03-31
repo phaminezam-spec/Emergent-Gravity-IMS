@@ -1,10 +1,12 @@
-ConstantSymbolValuePhysical Definition
-Rigidity Constantβ1.52The stability ratio required for the 3D lattice to remain "Airtight" under expansion.
-Isostatic Snapzc5.85The redshift threshold where spacetime transitioned from fluid to a rigid crystal.
-Epsilon Frequencyfε150 HzThe vibrational limit where nodes "phase out" of the 3D manifold into the substrate.
-Unit TensionTu≈0.3949The base energy held by a single connection (β² / zc).
-Lattice HeatQL≈1.2991The energy released when a single 1.52 connection fails and vibrates.
-Lattice GrainLu tPThe fixed Planck-scale distance between nodes in a relaxed state.
+Canonical Term	Symbol	Description / Use	Standard Replacement
 
-The Mathematical Link:
-These constants are coupled. The Metric Compression ratio is the log-scale relationship between these values that recovers the Schwarzschild Metric. Specifically, β / zc defines the Unit Curvature of the universe.
+Rigidity Constant	β	Stability ratio for lattice coherence	β
+Isostatic Snap	zc	Phase transition threshold	zc
+Epsilon Frequency	fε	Node decoupling frequency	fε
+Unit Tension	Tu	Base energy per connection	Tu
+Lattice Heat	QL	Energy released per connection failure	QL
+Lattice Grain	Lu	Planck-scale lattice spacing	Lu
+Lattice / Network	—	3D structural graph / manifold	lattice_graph
+Node positions	—	Coordinates in manifold	node_positions
+Nonlocal connectivity	—	Long-range probabilistic edges	stochastic_edge
+Phase reference / remnant	—	Nodes storing prior equilibrium	reference_node
